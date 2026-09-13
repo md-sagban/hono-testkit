@@ -1,0 +1,115 @@
+{
+  "name": "hono-testkit",
+  "version": "0.1.0",
+  "description": "Typed test harnesses and in-memory Cloudflare bindings for Hono applications",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "docs",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "prepack": "pnpm build",
+    "prepublishOnly": "pnpm check && pnpm test:coverage",
+    "dev": "tsup --watch",
+    "test": "pnpm test:node && pnpm test:runtime",
+    "test:node": "vitest run --config vitest.config.ts",
+    "test:runtime": "vitest run --config vitest.workerd.config.ts",
+    "test:coverage": "vitest run --coverage --config vitest.config.ts",
+    "test:watch": "vitest",
+    "lint:unused": "knip",
+    "typecheck": "tsc --noEmit",
+    "check": "pnpm typecheck && pnpm lint:unused && pnpm test && pnpm build"
+  },
+  "keywords": [
+    "hono",
+    "cloudflare-workers",
+    "testing",
+    "vitest",
+    "kv",
+    "r2",
+    "d1",
+    "sqlite",
+    "queues"
+  ],
+  "license": "MIT",
+  "author": "Mohammed Sagban",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/md-sagban/hono-testkit.git"
+  },
+  "homepage": "https://github.com/md-sagban/hono-testkit#readme",
+  "bugs": {
+    "url": "https://github.com/md-sagban/hono-testkit/issues"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
+  },
+  "packageManager": "pnpm@10.31.0",
+  "peerDependencies": {
+    "hono": ">=4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "hono": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@types/sql.js": "^1.4.9",
+    "sql.js": "^1.13.0"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-plugin": "^1.1.8",
+    "@cloudflare/workers-types": "^5.20260911.1",
+    "@types/node": "^22.15.0",
+    "@vitest/coverage-v8": "^4.1.11",
+    "hono": "^4.13.3",
+    "knip": "^6.35.1",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.11"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "pnpm": {
+    "overrides": {
+      "esbuild": "0.28.2"
+    }
+  },
+  "knip": {
+    "entry": [
+      "test/**/*.test.ts",
+      "test/runtime/worker.ts",
+      "*.config.ts"
+    ],
+    "project": [
+      "src/**/*.ts",
+      "test/**/*.ts",
+      "*.config.ts"
+    ],
+    "ignoreDependencies": [
+      "cloudflare"
+    ]
+  }
+}
